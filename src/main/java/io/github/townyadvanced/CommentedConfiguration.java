@@ -11,15 +11,21 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import com.google.common.base.Strings;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
+ * A YamlConfiguration that supports comments.
+ *
  * @author dumptruckman
  * @author Articdive
  * @author LlmDl
  */
 public class CommentedConfiguration extends YamlConfiguration {
+	private static final Logger DEFAULT_LOGGER = Logger.getLogger("CommentedConfiguration");
+
 	private final HashMap<String, String> comments = new HashMap<>();
 	private final Path path;
 	private final Logger logger;
@@ -27,16 +33,36 @@ public class CommentedConfiguration extends YamlConfiguration {
 	private int depth;
 
 	/**
+	 * Create a new CommentedConfiguration using the file at the given path.
+	 *
+	 * @param path	The Path where the config will be/is saved.
+	 */
+	public CommentedConfiguration(@NotNull Path path) {
+		this(path, (Logger) null);
+	}
+
+	/**
 	 * Create a new CommentedConfiguration using the file at the given path, for the
 	 * given plugin. Plugin's own Logger will be used for any error messages.
+	 *
+	 * @param path   The Path where the config will be/is saved.
+	 * @param plugin The Plugin to get the logger from.
+	 */
+	public CommentedConfiguration(@NotNull Path path, @NotNull Plugin plugin) {
+		this(path, plugin.getLogger());
+	}
+
+	/**
+	 * Create a new CommentedConfiguration using the file at the given path, for the
+	 * given plugin. Provide a Logger to use for any error messages.
 	 * 
 	 * @param path   The Path where the config will be/is saved.
-	 * @param plugin The plugin which supplies a logger.
+	 * @param logger The Logger to use for error messages.
 	 */
-	public CommentedConfiguration(Path path, Plugin plugin) {
+	public CommentedConfiguration(@NotNull Path path, @Nullable Logger logger) {
 		super();
 		this.path = path;
-		this.logger = plugin.getLogger();
+		this.logger = logger == null ? DEFAULT_LOGGER : logger;
 		setWidth();
 	}
 

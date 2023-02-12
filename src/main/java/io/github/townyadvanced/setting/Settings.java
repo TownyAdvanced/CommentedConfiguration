@@ -12,12 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A class that handles loading and saving of a CommentedConfiguration with {@link TypedNode}s.
+ * A class that handles loading and saving of a CommentedConfiguration with {@link TypedValueNode}s.
  */
-public class CommentedSettings {
+public class Settings {
     private final CommentedConfiguration config;
     private final Path configPath;
-    private final List<Node> defaultNodes;
+    private final List<CommentedNode> defaultNodes;
 
     /**
      * Creates a new CommentedSettings instance that makes use of CommentedConfiguration.
@@ -26,10 +26,7 @@ public class CommentedSettings {
      * @param plugin        The Plugin to get the logger from.
      * @param defaultNodes  The default node values to add to the configuration.
      */
-    public CommentedSettings(@NotNull Path configPath,
-                             @NotNull Plugin plugin,
-                             @Nullable List<Node> defaultNodes
-    ) {
+    public Settings(@NotNull Path configPath, @NotNull Plugin plugin, @Nullable List<CommentedNode> defaultNodes) {
         this.config = new CommentedConfiguration(configPath, plugin);
         this.configPath = configPath;
         this.defaultNodes = defaultNodes;
@@ -42,10 +39,7 @@ public class CommentedSettings {
      * @param logger        The Logger to use for error messages.
      * @param defaultNodes  The default node values to add to the configuration.
      */
-    public CommentedSettings(@NotNull Path configPath,
-                             @Nullable Logger logger,
-                             @Nullable List<Node> defaultNodes
-    ) {
+    public Settings(@NotNull Path configPath, @Nullable Logger logger, @Nullable List<CommentedNode> defaultNodes) {
         this.config = new CommentedConfiguration(configPath, logger);
         this.configPath = configPath;
         this.defaultNodes = defaultNodes;
@@ -94,13 +88,12 @@ public class CommentedSettings {
         if (defaultNodes == null || defaultNodes.isEmpty()) {
             return;
         }
-        for (Node node : defaultNodes) {
-            Object nodeValue = config.get(node.getPath());
-            if (nodeValue == null) {
-                config.set(node.getPath(), node.getDefaultValue());
-            }
+        for (CommentedNode node : defaultNodes) {
             if (node.getComments().length > 0) {
                 config.addComment(node.getPath(), node.getComments());
+            }
+            if (node instanceof ValueNode && config.get(node.getPath()) == null) {
+                config.set(node.getPath(), ((ValueNode)node).getDefaultValue());
             }
         }
     }
@@ -118,7 +111,7 @@ public class CommentedSettings {
      * @param node  The node to get the value of.
      * @return The value of the node.
      */
-    public Object get(@NotNull Node node) {
+    public Object get(@NotNull ValueNode node) {
         return config.get(node.getPath(), node.getDefaultValue());
     }
 
@@ -130,7 +123,7 @@ public class CommentedSettings {
      * @return The value of the node.
      * @param <T> The type of the node value.
      */
-    public <T> T get(@NotNull Node node, Class<T> type) {
+    public <T> T get(@NotNull ValueNode node, Class<T> type) {
         return config.getObject(node.getPath(), type, (T) node.getDefaultValue());
     }
 
@@ -141,7 +134,7 @@ public class CommentedSettings {
      * @return The value of the node.
      * @param <T> The type of the node value.
      */
-    public <T> T get(@NotNull TypedNode<T> node) {
+    public <T> T get(@NotNull TypedValueNode<T> node) {
         return config.getObject(node.getPath(), node.getType(), node.getDefaultValue());
     }
 
@@ -151,7 +144,7 @@ public class CommentedSettings {
      * @param node  The node to set the value of.
      * @param value The value to set.
      */
-    public void set(@NotNull Node node, Object value) {
+    public void set(@NotNull ValueNode node, Object value) {
         config.set(node.getPath(), value);
     }
 
@@ -162,7 +155,7 @@ public class CommentedSettings {
      * @param value The value to set.
      * @param <T> The type of the node value.
      */
-    public <T> void set(@NotNull TypedNode<T> node, T value) {
+    public <T> void set(@NotNull TypedValueNode<T> node, T value) {
         config.set(node.getPath(), value);
     }
 

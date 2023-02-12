@@ -1,7 +1,5 @@
 package io.github.townyadvanced.setting;
 
-import java.util.function.Predicate;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @param <T> The type of the node value.
  */
-public interface TypedNode<T> extends Node {
+public interface TypedValueNode<T> extends ValueNode {
     /**
      * Gets the class type {@link T} of the node value.
      *

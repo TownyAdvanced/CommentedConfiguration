@@ -2,20 +2,19 @@ package io.github.townyadvanced.setting;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Basic implementation of {@link TypedNode} with a builder.
+ * Basic implementation of {@link TypedValueNode} with a builder.
  *
  * @param <T> The type of the node value.
  */
-public class SimpleTypedNode<T> implements TypedNode<T> {
+public class SimpleNode<T> implements TypedValueNode<T> {
 
     /**
-     * A builder for {@link SimpleTypedNode}.
+     * A builder for {@link SimpleNode}.
      *
      * @param path  The path of the node.
      * @param type  The class type of the node value.
@@ -39,7 +38,7 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
      * @param defaultValue  The default value of the node.
      * @param comments      The comments of the node.
      */
-    public SimpleTypedNode(@NotNull String path, @NotNull Class<T> type, @Nullable T defaultValue, @NotNull String[] comments) {
+    public SimpleNode(@NotNull String path, @NotNull Class<T> type, @Nullable T defaultValue, @NotNull String[] comments) {
         this.path = path;
         this.type = type;
         this.defaultValue = defaultValue;
@@ -79,7 +78,7 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
     }
 
     /**
-     * A builder for {@link SimpleTypedNode}s.
+     * A builder for {@link SimpleNode}s.
      *
      * @param <T> The type of the node value.
      */
@@ -133,8 +132,8 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
          *
          * @return The node.
          */
-        public SimpleTypedNode<T> build() {
-            return new SimpleTypedNode<>(path, type, defaultValue, comments.toArray(new String[0]));
+        public SimpleNode<T> build() {
+            return new SimpleNode<>(path, type, defaultValue, comments.toArray(new String[0]));
         }
     }
 }

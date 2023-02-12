@@ -24,11 +24,4 @@ public interface TypedNode<T> extends Node {
      * @return The default value of the node.
      */
     @Nullable T getDefaultValue();
-
-    /**
-     * Gets the validator with type {@link T} of the node.
-     *
-     * @return The validator of the node, or null if there is no validator.
-     */
-    @Nullable Predicate<T> getTypedValidator();
 }

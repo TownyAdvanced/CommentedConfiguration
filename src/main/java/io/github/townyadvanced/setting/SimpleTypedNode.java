@@ -30,7 +30,6 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
     private final Class<T> type;
     private final T defaultValue;
     private final String[] comments;
-    private final Predicate<T> validator;
 
     /**
      * Creates a new node with the given path, type, default value, comment, and validator.
@@ -39,19 +38,12 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
      * @param type          The class type of the node value.
      * @param defaultValue  The default value of the node.
      * @param comments      The comments of the node.
-     * @param validator     The validator of the node, or null if there is no validator.
      */
-    public SimpleTypedNode(@NotNull String path,
-                           @NotNull Class<T> type,
-                           @Nullable T defaultValue,
-                           @NotNull String[] comments,
-                           @Nullable Predicate<T> validator
-    ) {
+    public SimpleTypedNode(@NotNull String path, @NotNull Class<T> type, @Nullable T defaultValue, @NotNull String[] comments) {
         this.path = path;
         this.type = type;
         this.defaultValue = defaultValue;
         this.comments = comments;
-        this.validator = validator;
     }
 
     /**
@@ -86,20 +78,6 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
         return comments;
     }
 
-    @Override
-    public @Nullable Predicate<Object> getValidator() {
-        // Using typed validator instead
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public @Nullable Predicate<T> getTypedValidator() {
-        return validator;
-    }
-
     /**
      * A builder for {@link SimpleTypedNode}s.
      *
@@ -110,7 +88,6 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
         private final Class<T> type;
         private T defaultValue;
         private final List<String> comments;
-        private Predicate<T> validator;
 
         /**
          * Creates a new builder with the given path and type.
@@ -152,23 +129,12 @@ public class SimpleTypedNode<T> implements TypedNode<T> {
         }
 
         /**
-         * Sets the validator of the node.
-         *
-         * @param validator The validator of the node.
-         * @return This builder.
-         */
-        public Builder<T> validator(Predicate<T> validator) {
-            this.validator = validator;
-            return this;
-        }
-
-        /**
          * Builds the node.
          *
          * @return The node.
          */
         public SimpleTypedNode<T> build() {
-            return new SimpleTypedNode<>(path, type, defaultValue, comments.toArray(new String[0]), validator);
+            return new SimpleTypedNode<>(path, type, defaultValue, comments.toArray(new String[0]));
         }
     }
 }

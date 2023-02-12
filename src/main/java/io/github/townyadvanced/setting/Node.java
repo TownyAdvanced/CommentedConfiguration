@@ -1,7 +1,5 @@
 package io.github.townyadvanced.setting;
 
-import java.util.function.Predicate;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,11 +26,4 @@ public interface Node {
      * @return The comment of the node.
      */
     @NotNull String[] getComments();
-
-    /**
-     * Gets the validator of the node.
-     *
-     * @return The validator of the node, or null if there is no validator.
-     */
-    @Nullable Predicate<Object> getValidator();
 }

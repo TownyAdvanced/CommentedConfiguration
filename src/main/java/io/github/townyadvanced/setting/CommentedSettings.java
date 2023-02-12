@@ -150,14 +150,9 @@ public class CommentedSettings {
      *
      * @param node  The node to set the value of.
      * @param value The value to set.
-     * @return True if the value was set, false if the validator failed.
      */
-    public boolean set(@NotNull Node node, Object value) {
-        if (node.getValidator() != null && !node.getValidator().test(value)) {
-            return false;
-        }
+    public void set(@NotNull Node node, Object value) {
         config.set(node.getPath(), value);
-        return true;
     }
 
     /**
@@ -165,18 +160,10 @@ public class CommentedSettings {
      *
      * @param node  The node to set the value of.
      * @param value The value to set.
-     * @return True if the value was set, false if the validator failed.
      * @param <T> The type of the node value.
      */
-    public <T> boolean set(@NotNull TypedNode<T> node, T value) {
-        if (node.getValidator() != null && !node.getValidator().test(value)) {
-            return false;
-        }
-        if (node.getTypedValidator() != null && !node.getTypedValidator().test(value)) {
-            return false;
-        }
+    public <T> void set(@NotNull TypedNode<T> node, T value) {
         config.set(node.getPath(), value);
-        return true;
     }
 
     /**

@@ -12,12 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A class that handles loading and saving of a CommentedConfiguration with {@link CommentedNode}s.
+ * A class that handles loading and saving of a CommentedConfiguration with {@link TypedNode}s.
  */
 public class CommentedSettings {
     private final CommentedConfiguration config;
     private final Path configPath;
-    private final List<CommentedNode<?>> defaultNodes;
+    private final List<Node> defaultNodes;
 
     /**
      * Creates a new CommentedSettings instance that makes use of CommentedConfiguration.
@@ -28,7 +28,7 @@ public class CommentedSettings {
      */
     public CommentedSettings(@NotNull Path configPath,
                              @NotNull Plugin plugin,
-                             @Nullable List<CommentedNode<?>> defaultNodes
+                             @Nullable List<Node> defaultNodes
     ) {
         this.config = new CommentedConfiguration(configPath, plugin);
         this.configPath = configPath;
@@ -44,7 +44,7 @@ public class CommentedSettings {
      */
     public CommentedSettings(@NotNull Path configPath,
                              @Nullable Logger logger,
-                             @Nullable List<CommentedNode<?>> defaultNodes
+                             @Nullable List<Node> defaultNodes
     ) {
         this.config = new CommentedConfiguration(configPath, logger);
         this.configPath = configPath;
@@ -94,7 +94,7 @@ public class CommentedSettings {
         if (defaultNodes == null || defaultNodes.isEmpty()) {
             return;
         }
-        for (CommentedNode<?> node : defaultNodes) {
+        for (Node node : defaultNodes) {
             Object nodeValue = config.get(node.getPath());
             if (nodeValue == null) {
                 config.set(node.getPath(), node.getDefaultValue());
@@ -117,10 +117,47 @@ public class CommentedSettings {
      *
      * @param node  The node to get the value of.
      * @return The value of the node.
+     */
+    public Object get(@NotNull Node node) {
+        return config.get(node.getPath(), node.getDefaultValue());
+    }
+
+    /**
+     * Gets the value of a node, if the node has a default value, it will be returned if the node is not found.
+     *
+     * @param node  The node to get the value of.
+     * @param type  The type of the node value.
+     * @return The value of the node.
      * @param <T> The type of the node value.
      */
-    public <T> T get(@NotNull CommentedNode<T> node) {
+    public <T> T get(@NotNull Node node, Class<T> type) {
+        return config.getObject(node.getPath(), type, (T) node.getDefaultValue());
+    }
+
+    /**
+     * Gets the value of a node, if the node has a default value, it will be returned if the node is not found.
+     *
+     * @param node  The node to get the value of.
+     * @return The value of the node.
+     * @param <T> The type of the node value.
+     */
+    public <T> T get(@NotNull TypedNode<T> node) {
         return config.getObject(node.getPath(), node.getType(), node.getDefaultValue());
+    }
+
+    /**
+     * Sets the value of a node, if the validator is not null, it will be tested first.
+     *
+     * @param node  The node to set the value of.
+     * @param value The value to set.
+     * @return True if the value was set, false if the validator failed.
+     */
+    public boolean set(@NotNull Node node, Object value) {
+        if (node.getValidator() != null && !node.getValidator().test(value)) {
+            return false;
+        }
+        config.set(node.getPath(), value);
+        return true;
     }
 
     /**
@@ -131,8 +168,11 @@ public class CommentedSettings {
      * @return True if the value was set, false if the validator failed.
      * @param <T> The type of the node value.
      */
-    public <T> boolean set(@NotNull CommentedNode<T> node, T value) {
+    public <T> boolean set(@NotNull TypedNode<T> node, T value) {
         if (node.getValidator() != null && !node.getValidator().test(value)) {
+            return false;
+        }
+        if (node.getTypedValidator() != null && !node.getTypedValidator().test(value)) {
             return false;
         }
         config.set(node.getPath(), value);

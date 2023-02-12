@@ -8,14 +8,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Basic implementation of {@link CommentedNode} with a builder.
+ * Basic implementation of {@link TypedNode} with a builder.
  *
  * @param <T> The type of the node value.
  */
-public class SimpleCommentedNode<T> implements CommentedNode<T> {
+public class SimpleTypedNode<T> implements TypedNode<T> {
 
     /**
-     * A builder for {@link SimpleCommentedNode}.
+     * A builder for {@link SimpleTypedNode}.
      *
      * @param path  The path of the node.
      * @param type  The class type of the node value.
@@ -41,11 +41,11 @@ public class SimpleCommentedNode<T> implements CommentedNode<T> {
      * @param comments      The comments of the node.
      * @param validator     The validator of the node, or null if there is no validator.
      */
-    public SimpleCommentedNode(@NotNull String path,
-                               @NotNull Class<T> type,
-                               @Nullable T defaultValue,
-                               @NotNull String[] comments,
-                               @Nullable Predicate<T> validator
+    public SimpleTypedNode(@NotNull String path,
+                           @NotNull Class<T> type,
+                           @Nullable T defaultValue,
+                           @NotNull String[] comments,
+                           @Nullable Predicate<T> validator
     ) {
         this.path = path;
         this.type = type;
@@ -86,16 +86,22 @@ public class SimpleCommentedNode<T> implements CommentedNode<T> {
         return comments;
     }
 
+    @Override
+    public @Nullable Predicate<Object> getValidator() {
+        // Using typed validator instead
+        return null;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public @Nullable Predicate<T> getValidator() {
+    public @Nullable Predicate<T> getTypedValidator() {
         return validator;
     }
 
     /**
-     * A builder for {@link SimpleCommentedNode}s.
+     * A builder for {@link SimpleTypedNode}s.
      *
      * @param <T> The type of the node value.
      */
@@ -112,7 +118,7 @@ public class SimpleCommentedNode<T> implements CommentedNode<T> {
          * @param path  The path of the node.
          * @param type  The class type of the node value.
          */
-        public Builder(@NotNull String path, @NotNull Class<T> type) {
+        protected Builder(@NotNull String path, @NotNull Class<T> type) {
             this.path = path;
             this.type = type;
             this.comments = new ArrayList<>();
@@ -161,8 +167,8 @@ public class SimpleCommentedNode<T> implements CommentedNode<T> {
          *
          * @return The node.
          */
-        public SimpleCommentedNode<T> build() {
-            return new SimpleCommentedNode<>(path, type, defaultValue, comments.toArray(new String[0]), validator);
+        public SimpleTypedNode<T> build() {
+            return new SimpleTypedNode<>(path, type, defaultValue, comments.toArray(new String[0]), validator);
         }
     }
 }

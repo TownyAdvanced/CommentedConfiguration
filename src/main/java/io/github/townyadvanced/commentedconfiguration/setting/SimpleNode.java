@@ -1,4 +1,4 @@
-package io.github.townyadvanced.setting;
+package io.github.townyadvanced.commentedconfiguration.setting;
 
 import java.util.ArrayList;
 import java.util.List;

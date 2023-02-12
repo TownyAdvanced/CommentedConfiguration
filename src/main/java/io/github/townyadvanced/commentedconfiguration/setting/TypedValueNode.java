@@ -1,4 +1,4 @@
-package io.github.townyadvanced.setting;
+package io.github.townyadvanced.commentedconfiguration.setting;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

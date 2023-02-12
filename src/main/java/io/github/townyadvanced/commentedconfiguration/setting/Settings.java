@@ -1,4 +1,4 @@
-package io.github.townyadvanced.setting;
+package io.github.townyadvanced.commentedconfiguration.setting;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Logger;
 
-import io.github.townyadvanced.CommentedConfiguration;
+import io.github.townyadvanced.commentedconfiguration.CommentedConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

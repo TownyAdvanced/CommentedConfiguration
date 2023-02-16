@@ -44,6 +44,154 @@ https://github.com/TownyAdvanced/CommentedConfiguration/blob/7c1122ae3e9edcd4bd6
 You can also save settings back to the config using the following methods, just remember to save your settings field afterwards using settings.save();
 https://github.com/TownyAdvanced/CommentedConfiguration/blob/7c1122ae3e9edcd4bd61b4e1b4f9d21a3268917e/src/main/java/io/github/townyadvanced/commentedconfiguration/setting/Settings.java#L141-L160
 
+### Further example
+
+<details><summary>Click to view</summary>
+
+Main
+```java
+package org.example;
+
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
+
+import com.google.common.collect.Lists;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.example.setting.CommentedSettings;
+
+public class Main {
+    public static void main(String[] args) {
+        final Path file = Path.of("/home/ben10/Desktop/config.yml");
+        final CommentedSettings settings = new CommentedSettings(file, Logger.getLogger("TEST"), TestNodes.getAllNodes());
+        if (!settings.load()) {
+            System.out.println("Failed to load config");
+            return;
+        }
+        System.out.println("Loaded config");
+        System.out.println(settings.get(TestNodes.BOOLEAN_NODE));
+        System.out.println(settings.get(TestNodes.STRING_NODE));
+        System.out.println(settings.get(TestNodes.LOCATION_NODE));
+        settings.save();
+        System.out.println("Saved config");
+
+        final Path enumFile = Path.of("/home/ben10/Desktop/enumconfig.yml");
+        final CommentedSettings enumSettings = new CommentedSettings(enumFile, Logger.getLogger("ENUMTEST"), Arrays.asList(TestEnumNodes.values()));
+        if (!enumSettings.load()) {
+            System.out.println("Failed to load enumconfig");
+            return;
+        }
+        System.out.println("Loaded enumconfig");
+        System.out.println(enumSettings.get(TestEnumNodes.TEST_BOOLEAN));
+        System.out.println(enumSettings.get(TestEnumNodes.TEST_STRING));
+        System.out.println(enumSettings.get(TestEnumNodes.TEST_LOCATION));
+        enumSettings.save();
+        System.out.println("Saved enumconfig");
+    }
+}
+```
+
+TestEnumNodes
+```java
+package org.example;
+
+import java.util.function.Predicate;
+
+import org.bukkit.Location;
+import org.example.setting.Node;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public enum TestEnumNodes implements Node {
+    TEST_BOOLEAN(
+            "test.boolean",
+            true,
+            new String[] {"# This is a test boolean.", "# It is true by default."}
+    ),
+    TEST_STRING(
+            "test.string",
+            "Hello, world!",
+            new String[] {"# This is a test string.", "# It is \"Hello, world!\" by default."}
+    ),
+    TEST_LOCATION(
+            "test.location",
+            new Location(null, 0, 0, 0),
+            new String[] {"# This is a test location.", "# It is (0, 0, 0) by default."}
+    ),
+    ;
+
+    private final String path;
+    private final Object defaultValue;
+    private final String[] comments;
+
+    TestEnumNodes(String path, Object defaultValue, String[] comments) {
+        this.path = path;
+        this.defaultValue = defaultValue;
+        this.comments = comments;
+    }
+
+    @Override
+    public @NotNull String getPath() {
+        return path;
+    }
+
+    @Override
+    public @Nullable Object getDefaultValue() {
+        return defaultValue;
+    }
+
+    @Override
+    public @NotNull String[] getComments() {
+        return comments;
+    }
+}
+```
+
+TestNodes
+```java
+package org.example;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.Location;
+import org.example.setting.Node;
+import org.example.setting.SimpleTypedNode;
+import org.example.setting.TypedNode;
+
+public class TestNodes {
+    private static final List<Node> nodes = new ArrayList<>();
+
+    private static <T> TypedNode<T> node(TypedNode<T> node) {
+        nodes.add(node);
+        return node;
+    }
+
+    public static final TypedNode<Boolean> BOOLEAN_NODE = node(SimpleTypedNode.builder("test.boolean", Boolean.class)
+            .defaultValue(true)
+            .comment("This is a boolean")
+            .build());
+
+    public static final TypedNode<String> STRING_NODE = node(SimpleTypedNode.builder("test.string", String.class)
+            .defaultValue("default")
+            .comment("This is a string")
+            .build());
+
+    public static final TypedNode<Location> LOCATION_NODE = node(SimpleTypedNode.builder("test.location", Location.class)
+            .defaultValue(new Location(null, 0, 0, 0))
+            .comment("This is a location")
+            .build());
+
+    public static List<Node> getAllNodes() {
+        return nodes;
+    }
+}
+```
+
+
+</details>
+
 ## History
 
 CommentedConfiguration goes *waaay back* to the original days of Bukkit plugins. Originally devised by [dumptruckman](https://github.com/dumptruckman) who used it in his [PluginBase](https://github.com/dumptruckman/PluginBase), it was [added into Towny](https://github.com/TownyAdvanced/Towny/commit/9de37765a69c92d9fe8ffe94cb62c5c7f250c6c5) in August of 2011. It was maintained over the years in the Towny codebase, receiving a number of updates that kept it working as Bukkit developed. Even after Bukkit's native yaml configuration [received the ability to handle comments in late 2021](https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/3e2dd2bc120754ea4db193e878050d0eb31a6894#src/main/java/org/bukkit/configuration/file/YamlConfiguration.java), the CommentedConfiguration system is still superior for its ability to update the config's existing comments as your plugin updates.

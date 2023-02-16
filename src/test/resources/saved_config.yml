@@ -1,0 +1,23 @@
+# This config is for testing
+# It is not intended for use in production
+test:
+  # This is a boolean
+  boolean: true
+  # This is a string
+  string: test
+  # This is a location
+  location:
+    ==: org.bukkit.Location
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    pitch: 0.0
+    yaw: 0.0
+  # This is an integer
+  integer: 1234
+  nested:
+    # This is a list
+    list:
+    - one
+    - two
+    - three

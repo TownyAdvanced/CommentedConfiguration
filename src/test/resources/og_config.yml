@@ -1,0 +1,10 @@
+test:
+  boolean: true
+  string: 'test'
+  location:
+    ==: org.bukkit.Location
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    pitch: 0.0
+    yaw: 0.0

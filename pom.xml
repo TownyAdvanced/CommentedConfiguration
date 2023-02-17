@@ -4,12 +4,34 @@
   <artifactId>CommentedConfiguration</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <description>YAML Configuration for Bukkit with support for comments.</description>
-  
+
+  <licenses>
+    <license>
+      <name>CC BY-NC-ND 3.0</name>
+      <url>http://creativecommons.org/licenses/by-nc-nd/3.0/</url>
+      <comments>Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported</comments>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <organization>
+    <name>TownyAdvanced</name>
+    <url>https://github.com/TownyAdvanced</url>
+  </organization>
+
   <properties>
     <java.version>1.8</java.version>
     <project.bukkitAPIVersion>1.14</project.bukkitAPIVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <distributionManagement>
+    <repository>
+      <id>nexus</id>
+      <name>Glare Repo</name>
+      <url>https://repo.glaremasters.me/repository/towny/</url>
+    </repository>
+  </distributionManagement>
 
   <repositories>
     <repository>
@@ -97,6 +119,14 @@
       <version>5.9.2</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher -->
+    <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-launcher</artifactId>
+        <version>1.9.2</version>
+        <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>

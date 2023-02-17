@@ -4,7 +4,38 @@ A yaml configuration system that supports comments, automatic editing of existin
 
 ## Importing CommentedConfiguration into your project
 
-Instructions to follow when we have a repo.
+Maven:
+```
+  <repositories>
+    <repository>
+      <id>glaremasters repo</id>
+      <url>https://repo.glaremasters.me/repository/towny/</url>
+    </repository>
+  </repositories>
+```
+
+```
+  <dependency>
+    <groupId>io.github.townyadvanced.commentedconfiguration</groupId>
+    <artifactId>CommentedConfiguration</artifactId>
+    <version>1.0.0</version>
+  </dependency>
+```
+
+Gradle:
+
+```
+repositories {
+    maven {
+        name = 'glaremasters repo'
+        url = 'https://repo.glaremasters.me/repository/towny/'
+    }
+
+dependencies {
+    compileOnly 'io.github.townyadvanced.commentedconfiguration:commentedconfiguration:1.0.0'
+}
+```
+
 
 ## Usage
 

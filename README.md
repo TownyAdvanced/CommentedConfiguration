@@ -54,17 +54,14 @@ package org.example;
 
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
-import com.google.common.collect.Lists;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.example.setting.CommentedSettings;
+import io.github.townyadvanced.commentedconfiguration.setting.Settings;
 
 public class Main {
     public static void main(String[] args) {
         final Path file = Path.of("/home/ben10/Desktop/config.yml");
-        final CommentedSettings settings = new CommentedSettings(file, Logger.getLogger("TEST"), TestNodes.getAllNodes());
+        final Settings settings = new Settings(file, Logger.getLogger("TEST"), TestNodes.getAllNodes());
         if (!settings.load()) {
             System.out.println("Failed to load config");
             return;
@@ -77,7 +74,7 @@ public class Main {
         System.out.println("Saved config");
 
         final Path enumFile = Path.of("/home/ben10/Desktop/enumconfig.yml");
-        final CommentedSettings enumSettings = new CommentedSettings(enumFile, Logger.getLogger("ENUMTEST"), Arrays.asList(TestEnumNodes.values()));
+        final Settings enumSettings = new Settings(enumFile, Logger.getLogger("ENUMTEST"), Arrays.asList(TestEnumNodes.values()));
         if (!enumSettings.load()) {
             System.out.println("Failed to load enumconfig");
             return;
@@ -96,14 +93,12 @@ TestEnumNodes
 ```java
 package org.example;
 
-import java.util.function.Predicate;
-
+import io.github.townyadvanced.commentedconfiguration.setting.ValueNode;
 import org.bukkit.Location;
-import org.example.setting.Node;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public enum TestEnumNodes implements Node {
+public enum TestEnumNodes implements ValueNode {
     TEST_BOOLEAN(
             "test.boolean",
             true,
@@ -155,35 +150,35 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.townyadvanced.commentedconfiguration.setting.CommentedNode;
+import io.github.townyadvanced.commentedconfiguration.setting.SimpleNode;
+import io.github.townyadvanced.commentedconfiguration.setting.TypedValueNode;
 import org.bukkit.Location;
-import org.example.setting.Node;
-import org.example.setting.SimpleTypedNode;
-import org.example.setting.TypedNode;
 
 public class TestNodes {
-    private static final List<Node> nodes = new ArrayList<>();
+    private static final List<CommentedNode> nodes = new ArrayList<>();
 
-    private static <T> TypedNode<T> node(TypedNode<T> node) {
+    private static <T> TypedValueNode<T> node(TypedValueNode<T> node) {
         nodes.add(node);
         return node;
     }
 
-    public static final TypedNode<Boolean> BOOLEAN_NODE = node(SimpleTypedNode.builder("test.boolean", Boolean.class)
+    public static final TypedValueNode<Boolean> BOOLEAN_NODE = node(SimpleNode.builder("test.boolean", Boolean.class)
             .defaultValue(true)
             .comment("This is a boolean")
             .build());
 
-    public static final TypedNode<String> STRING_NODE = node(SimpleTypedNode.builder("test.string", String.class)
+    public static final TypedValueNode<String> STRING_NODE = node(SimpleNode.builder("test.string", String.class)
             .defaultValue("default")
             .comment("This is a string")
             .build());
 
-    public static final TypedNode<Location> LOCATION_NODE = node(SimpleTypedNode.builder("test.location", Location.class)
+    public static final TypedValueNode<Location> LOCATION_NODE = node(SimpleNode.builder("test.location", Location.class)
             .defaultValue(new Location(null, 0, 0, 0))
             .comment("This is a location")
             .build());
 
-    public static List<Node> getAllNodes() {
+    public static List<CommentedNode> getAllNodes() {
         return nodes;
     }
 }

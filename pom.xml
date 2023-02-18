@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.townyadvanced.commentedconfiguration</groupId>
   <artifactId>CommentedConfiguration</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <description>YAML Configuration for Bukkit with support for comments.</description>
 
   <licenses>

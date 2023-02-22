@@ -32,7 +32,7 @@ repositories {
     }
 
 dependencies {
-    compileOnly 'io.github.townyadvanced.commentedconfiguration:commentedconfiguration:1.0.0'
+    compileOnly 'io.github.townyadvanced.commentedconfiguration:CommentedConfiguration:1.0.0'
 }
 ```
 

@@ -83,10 +83,10 @@ public class SimpleNode<T> implements TypedValueNode<T> {
      * @param <T> The type of the node value.
      */
     public static class Builder<T> {
-        private final String path;
-        private final Class<T> type;
-        private T defaultValue;
-        private final List<String> comments;
+        protected final String path;
+        protected final Class<T> type;
+        protected T defaultValue;
+        protected final List<String> comments;
 
         /**
          * Creates a new builder with the given path and type.

@@ -218,6 +218,12 @@ public class TestNodes {
 
 </details>
 
+## Converting Existing Configs To CommentedConfiguration
+
+@ipiepiepie has created a python script that will convert configuration files into CommentedConfigurations.
+
+It is available on their [CommentedConfigurationMigrator repo](https://github.com/ipiepiepie/CommentedConfigurationMigrator), make sure you check it out if you aren't starting from scratch.
+  
 ## History
 
 CommentedConfiguration goes *waaay back* to the original days of Bukkit plugins. Originally devised by [dumptruckman](https://github.com/dumptruckman) who used it in his [PluginBase](https://github.com/dumptruckman/PluginBase), it was [added into Towny](https://github.com/TownyAdvanced/Towny/commit/9de37765a69c92d9fe8ffe94cb62c5c7f250c6c5) in August of 2011. It was maintained over the years in the Towny codebase, receiving a number of updates that kept it working as Bukkit developed. Even after Bukkit's native yaml configuration [received the ability to handle comments in late 2021](https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/3e2dd2bc120754ea4db193e878050d0eb31a6894#src/main/java/org/bukkit/configuration/file/YamlConfiguration.java), the CommentedConfiguration system is still superior for its ability to update the config's existing comments as your plugin updates.

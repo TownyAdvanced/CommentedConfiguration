@@ -18,7 +18,7 @@ Maven:
   <dependency>
     <groupId>io.github.townyadvanced.commentedconfiguration</groupId>
     <artifactId>CommentedConfiguration</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
   </dependency>
 ```
 
@@ -32,7 +32,7 @@ repositories {
     }
 
 dependencies {
-    compileOnly 'io.github.townyadvanced.commentedconfiguration:CommentedConfiguration:1.0.0'
+    compileOnly 'io.github.townyadvanced.commentedconfiguration:CommentedConfiguration:1.0.2'
 }
 ```
 
